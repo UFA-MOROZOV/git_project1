@@ -2,6 +2,7 @@ import random
 import pygame
 import os
 import sys  # Импортируются библиотеки
+from PROGRAMM import Player, Directions, Ball, Racketka, game_over
 global screen
 
 
@@ -826,7 +827,99 @@ def game_on(position):  # Создание цикла игры в случае �
                     pygame.display.flip()
             pygame.quit()
         elif 275 < x < 530 and 350 < y < 385:
-            print('Ярослав, добавь пинг-понг')
+            black = (0, 0, 0)
+            clock = pygame.time.Clock()
+            win_width = 800
+            win_height = 640
+            max_score = 10
+            display = (win_width, win_height)
+            pygame.init()
+            screen = pygame.display.set_mode(display, 0, 32)
+            done = False
+            fps = 30
+            all_sprites_pp = pygame.sprite.Group()
+            camouflage = pygame.sprite.Sprite(all_sprites_pp)
+            camouflage.image = load_image('field.png')
+            camouflage.rect = camouflage.image.get_rect()
+            camouflage.rect.topleft = [0, 0]
+            left_player = Player(Directions.LEFT, 'Left')
+            right_player = Player(Directions.RIGHT, 'Right')
+            curr_ball = Ball(screen, win_width, win_height)
+            left_racket = Racketka(screen, win_width, win_height, Directions.LEFT)
+            right_racket = Racketka(screen, win_width, win_height, Directions.RIGHT)
+            rackets = pygame.sprite.Group()
+            rackets.add(left_racket)
+            rackets.add(right_racket)
+            stuff_to_draw = pygame.sprite.Group()
+            stuff_to_draw.add(left_racket)
+            stuff_to_draw.add(right_racket)
+            while not done:
+                screen.fill(black)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Выход в меню
+                        done = True
+                        pygame.quit()
+                        start()
+                all_sprites_pp.draw(screen)
+                pygame.event.pump()
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_q]:
+                    done = True
+                if keys[pygame.K_UP]:
+                    right_racket.move_up()
+                if keys[pygame.K_DOWN]:
+                    right_racket.move_down()
+                if keys[pygame.K_w]:
+                    left_racket.move_up()
+                if keys[pygame.K_s]:
+                    left_racket.move_down()
+
+                stuff_to_draw.update()
+                curr_ball.update()
+
+                col_left, col_right = curr_ball.rect.colliderect(left_racket.rect), curr_ball.rect.colliderect(
+                    right_racket.rect)
+                if col_right == 1 or col_left == 1:
+                    curr_ball.toggle_direction()
+                    curr_ball.hit()
+
+                if curr_ball.get_x_val() <= 0:  # left border
+                    right_player.score = 1
+                    curr_ball = Ball(screen, win_width, win_height)
+                elif curr_ball.get_x_val() >= win_width:  # right border
+                    left_player.score = 1
+                    curr_ball = Ball(screen, win_width, win_height)
+
+                # Print scores
+                font = pygame.font.SysFont('Helvetica', 25)
+
+                left_player_score = font.render(
+                    '{}'.format(left_player.score), True, (255, 255, 255))
+                right_player_score = font.render(
+                    '{}'.format(right_player.score), True, (255, 255, 255))
+                goal_text = font.render(
+                    '{}'.format(max_score), True, (255, 255, 0))
+
+                screen.blit(left_player_score, (win_width / 2 - 100, 10))
+                screen.blit(right_player_score, (win_width / 2 + 100, 10))
+                screen.blit(goal_text, (win_width / 2, 0))
+
+                stuff_to_draw.draw(screen)
+                curr_ball.draw(screen)
+
+                if left_player.score >= max_score:
+                    game_over(screen, left_player, left_player, right_player)
+                elif right_player.score >= max_score:
+                    game_over(screen, right_player, left_player, right_player)
+                if left_player.score >= max_score or right_player.score >= max_score:
+                    done = True
+
+                pygame.display.set_caption('ПИНГ-ПОНГ ' + str(clock.get_fps()))
+
+                pygame.display.flip()
+                clock.tick(fps)
 
 
 def start():  # Функция вызова менюшки
