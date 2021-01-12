@@ -839,7 +839,7 @@ def game_on(position):  # Создание цикла игры в случае �
             fps = 30
             all_sprites_pp = pygame.sprite.Group()
             camouflage = pygame.sprite.Sprite(all_sprites_pp)
-            camouflage.image = load_image('field.png')
+            camouflage.image = load_image('camouflage.png')
             camouflage.rect = camouflage.image.get_rect()
             camouflage.rect.topleft = [0, 0]
             left_player = Player(Directions.LEFT, 'Left')
