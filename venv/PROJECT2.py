@@ -2,7 +2,7 @@ import random
 import pygame
 import os
 import sys  # Импортируются библиотеки
-from PROGRAMM import Player, Directions, Ball, Racketka, game_over
+from PROJECT2_2 import Player, Directions, Ball, Racketka, game_over
 global screen
 
 
