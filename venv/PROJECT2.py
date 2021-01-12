@@ -858,9 +858,9 @@ def game_on(position):  # Создание цикла игры в случае �
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         done = True
+                        sys.exit()
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Выход в меню
                         done = True
-                        pygame.quit()
                         start()
                 all_sprites_pp.draw(screen)
                 pygame.event.pump()
