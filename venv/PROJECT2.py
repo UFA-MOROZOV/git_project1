@@ -551,7 +551,7 @@ class Minesweeper(Board):
                     font = pygame.font.Font('data/Arial.ttf', 50)
                     text = font.render('Вы проиграли.', True, (255, 211, 0))
                     text_x = 350 - text.get_width() // 2
-                    text_y = 350 // 2 - text.get_height() // 2
+                    text_y = 350 - text.get_height() // 2
                     text_w = text.get_width()
                     text_h = text.get_height()
                     pygame.draw.rect(screen, 'black', (text_x - 10, text_y - 10,
