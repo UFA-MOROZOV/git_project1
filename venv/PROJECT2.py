@@ -915,7 +915,7 @@ def game_on(position):  # Создание цикла игры в случае �
                 if left_player.score >= max_score or right_player.score >= max_score:
                     done = True
 
-                pygame.display.set_caption('ПИНГ-ПОНГ ' + str(clock.get_fps()))
+                pygame.display.set_caption('ПИНГ-ПОНГ ')
 
                 pygame.display.flip()
                 clock.tick(fps)

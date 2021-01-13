@@ -128,7 +128,10 @@ class Racketka(pygame.sprite.Sprite):
 
     def __init__(self, screen_r, width, height, side):
         super().__init__()
-        racketka_img = load_image('soldat_p_68_100.png')
+        if side == Directions.DOWN_RIGHT:
+            racketka_img = load_image('soldat_p_68_100.png')
+        else:
+            racketka_img = load_image('nazi_soldat.png')
         self.width, self.height = width, height
         self.racket_height = 100
         self.movement_speed = 20
